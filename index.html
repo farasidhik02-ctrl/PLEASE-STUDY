@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Study Quest</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">🧠</div>
+        <div>
+          <h1>Study Quest</h1>
+          <p>Focus today. Ace tomorrow.</p>
+        </div>
+      </div>
+
+      <nav>
+        <button class="nav-btn active" data-view="today">⌂ <span>Today</span></button>
+        <button class="nav-btn" data-view="plan">▣ <span>Plan</span></button>
+        <button class="nav-btn" data-view="stats">◫ <span>Stats</span></button>
+        <button class="nav-btn" data-view="rewards">🎁 <span>Rewards</span></button>
+        <button class="nav-btn" id="brainDumpBtn">☁ <span>Brain Dump</span></button>
+      </nav>
+
+      <div class="countdown-card">
+        <h3>Exam Countdown</h3>
+        <label for="examDate">Exam date</label>
+        <input id="examDate" type="date" />
+        <div class="days-left"><span id="daysLeft">—</span><small>days left</small></div>
+      </div>
+
+      <div class="sidebar-note">☆<br />You don't have to be perfect,<br />just consistent.</div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h2 id="greeting">Good morning 👋</h2>
+          <p>Don't think about the whole exam. Just start.</p>
+        </div>
+        <div class="top-actions">
+          <button id="focusModeBtn" class="secondary-btn">◎ Focus Mode</button>
+          <button id="resetTodayBtn" class="icon-btn" title="Reset today's task completion">↻</button>
+        </div>
+      </header>
+
+      <section id="todayView" class="view active-view">
+        <div class="stats-grid">
+          <article class="stat-card">
+            <span class="stat-icon purple">◷</span>
+            <div><small>Study Time Today</small><strong id="studyTimeToday">0m</strong></div>
+          </article>
+          <article class="stat-card">
+            <span class="stat-icon green">✓</span>
+            <div><small>Tasks Completed</small><strong id="taskCount">0 / 0</strong></div>
+          </article>
+          <article class="stat-card">
+            <span class="stat-icon pink">🔥</span>
+            <div><small>Study Days</small><strong id="studyDays">0 days</strong></div>
+          </article>
+          <article class="stat-card">
+            <span class="stat-icon yellow">★</span>
+            <div><small>XP Earned Today</small><strong id="xpToday">0 XP</strong></div>
+          </article>
+        </div>
+
+        <div class="dashboard-grid">
+          <div class="left-column">
+            <section class="card plan-card">
+              <div class="card-header">
+                <div>
+                  <h3>🎯 Today's Study Plan</h3>
+                  <p>Focus on these tasks. One step at a time.</p>
+                </div>
+                <button id="openAddTask" class="primary-light">＋ Add Task</button>
+              </div>
+
+              <div id="taskList" class="task-list"></div>
+
+              <div class="progress-area">
+                <span id="progressText">No tasks yet</span>
+                <div class="progress-track"><div id="progressBar"></div></div>
+                <span id="progressPercent">0%</span>
+              </div>
+            </section>
+
+            <section class="card timer-card">
+              <div class="card-header">
+                <div>
+                  <h3>⏱ Focus Timer</h3>
+                  <p>Start small. Staying is easier than starting.</p>
+                </div>
+              </div>
+
+              <div class="timer-content">
+                <div class="time-options">
+                  <button data-minutes="5">5 min</button>
+                  <button data-minutes="10">10 min</button>
+                  <button data-minutes="15">15 min</button>
+                  <button data-minutes="25" class="selected">25 min</button>
+                  <button data-minutes="45">45 min</button>
+                </div>
+
+                <div class="timer-center">
+                  <div id="timerDisplay">25:00</div>
+                  <div class="timer-buttons">
+                    <button id="startTimer" class="primary-btn">START FOCUS SESSION</button>
+                    <button id="pauseTimer" class="secondary-btn">PAUSE</button>
+                    <button id="resetTimer" class="secondary-btn">RESET</button>
+                  </div>
+                  <p id="timerTaskLabel" class="muted">No task selected — that's okay.</p>
+                </div>
+
+                <div class="session-tips">
+                  <strong>Session Tips</strong>
+                  <span>📱 Put your phone away</span>
+                  <span>🎯 One thing only</span>
+                  <span>🫁 Breathe before starting</span>
+                  <span>⭐ Five minutes still counts</span>
+                </div>
+              </div>
+            </section>
+
+            <section class="remember-card">
+              <span>⭐</span>
+              <div>
+                <strong>Remember</strong>
+                <p>Progress, not perfection. Every minute you study is a step closer.</p>
+              </div>
+            </section>
+          </div>
+
+          <div class="right-column">
+            <section class="card reward-card">
+              <h3>🎁 Today's Reward</h3>
+              <p>Complete all today's tasks to unlock it.</p>
+              <div id="rewardBox" class="reward-box">
+                <small>My Reward</small>
+                <strong id="rewardText">Set a reward for yourself</strong>
+              </div>
+              <div class="reward-progress">
+                <div id="rewardCircle"><span>🎁</span><strong id="rewardPercent">0%</strong></div>
+                <small id="rewardStatus">Add tasks to begin</small>
+              </div>
+              <button id="editRewardBtn" class="secondary-btn full">Set / Change Reward</button>
+            </section>
+
+            <section class="card quick-card">
+              <h3>♡ Quick Start</h3>
+              <p>Not feeling it? Let's get you started.</p>
+              <button id="fiveMinuteBtn"><strong>◷ 5-Minute Starter</strong><small>Just five minutes. That's all.</small></button>
+              <button id="pickForMeBtn"><strong>⤨ Pick for Me</strong><small>I'll choose one unfinished task.</small></button>
+              <button id="cantStudyBtn"><strong>😞 I Don't Want to Study</strong><small>Help me start anyway.</small></button>
+              <button id="parkingLotBtn"><strong>☁ Distraction Parking Lot</strong><small>Dump it here. Focus later.</small></button>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section id="planView" class="view">
+        <section class="card page-card">
+          <h2>Study Plan</h2>
+          <p class="muted">Add what you realistically want to finish today. Keep the list small.</p>
+          <button id="openAddTaskPlan" class="primary-btn">＋ Add Study Task</button>
+          <div id="planTaskList" class="task-list spaced"></div>
+        </section>
+      </section>
+
+      <section id="statsView" class="view">
+        <section class="card page-card">
+          <h2>Your Progress</h2>
+          <div class="big-stats">
+            <div><strong id="totalMinutesStat">0</strong><span>total minutes studied</span></div>
+            <div><strong id="totalCompletedStat">0</strong><span>tasks completed</span></div>
+            <div><strong id="totalXPStat">0</strong><span>total XP</span></div>
+          </div>
+          <h3>Recent Study Sessions</h3>
+          <div id="sessionHistory" class="history-list"></div>
+        </section>
+      </section>
+
+      <section id="rewardsView" class="view">
+        <section class="card page-card">
+          <h2>Rewards</h2>
+          <p class="muted">The reward stays locked until every task you committed to today is complete.</p>
+          <div class="big-reward">
+            <div id="bigRewardIcon">🔒</div>
+            <h3 id="bigRewardText">No reward set yet</h3>
+            <p id="bigRewardMessage">Set today's reward, then earn it.</p>
+            <button id="editRewardBtn2" class="primary-btn">Set Reward</button>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <div id="modalBackdrop" class="modal-backdrop hidden">
+    <div id="taskModal" class="modal hidden">
+      <button class="modal-close" data-close>×</button>
+      <h2>Add Study Task</h2>
+      <label>What will you study?</label>
+      <input id="taskTitleInput" placeholder="e.g. Revise Fundamental Rights" />
+      <label>How long?</label>
+      <select id="taskMinutesInput">
+        <option value="5">5 minutes</option>
+        <option value="10">10 minutes</option>
+        <option value="15">15 minutes</option>
+        <option value="20">20 minutes</option>
+        <option value="25" selected>25 minutes</option>
+        <option value="30">30 minutes</option>
+        <option value="45">45 minutes</option>
+        <option value="60">60 minutes</option>
+      </select>
+      <label>Type</label>
+      <select id="taskTypeInput">
+        <option>Study</option>
+        <option>Revision</option>
+        <option>Practice</option>
+        <option>Reading</option>
+        <option>Mock Test</option>
+      </select>
+      <button id="saveTaskBtn" class="primary-btn full">Add Task</button>
+    </div>
+
+    <div id="rewardModal" class="modal hidden">
+      <button class="modal-close" data-close>×</button>
+      <h2>Today's Reward 🎁</h2>
+      <p class="muted">Pick something you genuinely want.</p>
+      <input id="rewardInput" placeholder="e.g. Watch one episode guilt-free" />
+      <button id="saveRewardBtn" class="primary-btn full">Save Reward</button>
+    </div>
+
+    <div id="dumpModal" class="modal hidden">
+      <button class="modal-close" data-close>×</button>
+      <h2>Distraction Parking Lot ☁</h2>
+      <p class="muted">Put distracting thoughts here instead of acting on them.</p>
+      <textarea id="dumpInput" rows="4" placeholder="I need to check..., remember to..., search for..."></textarea>
+      <button id="saveDumpBtn" class="primary-btn full">Park Thought</button>
+      <div id="dumpList" class="dump-list"></div>
+    </div>
+
+    <div id="cantStudyModal" class="modal hidden">
+      <button class="modal-close" data-close>×</button>
+      <h2 id="cantStudyTitle">Okay. No big study session.</h2>
+      <div id="cantStudyContent" class="start-help">
+        <p>We're only trying to cross the starting line.</p>
+        <button id="microStepBtn" class="primary-btn full">Step 1: Put your phone away</button>
+      </div>
+    </div>
+
+    <div id="celebrationModal" class="modal celebration hidden">
+      <div class="confetti">🎉 ✨ 🎊 ⭐ 🎉</div>
+      <h2>YOU DID IT!</h2>
+      <p>You completed your entire study plan for today.</p>
+      <div class="unlocked">🎁 REWARD UNLOCKED</div>
+      <strong id="celebrationReward">Enjoy your reward.</strong>
+      <button class="primary-btn full" data-close>YESSS ✨</button>
+    </div>
+  </div>
+
+  <div id="focusOverlay" class="focus-overlay hidden">
+    <button id="closeFocus" class="focus-close">×</button>
+    <p>CURRENT QUEST</p>
+    <h1 id="focusTaskTitle">Choose one task</h1>
+    <div id="focusTimerDisplay">25:00</div>
+    <button id="focusStartBtn" class="primary-btn">START</button>
+    <p class="focus-message">You do not need to finish everything. Just do this.</p>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
